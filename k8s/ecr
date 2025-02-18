@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signalify-dashboard
+  labels:
+    app: signalify-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: signalify-dashboard
+  template:
+    metadata:
+      labels:
+        app: signalify-dashboard
+    spec:
+      imagePullSecrets:
+        - name: ecr-secret
+      containers:
+        - name: signalify-dashboard
+          image: '639740312107.dkr.ecr.us-east-1.amazonaws.com/signalify-dashboard:test'
+          ports:
+            - containerPort: 8080
+          env:
+            - name: VITE_APP_VERSION
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_APP_VERSION } }
+            - name: GENERATE_SOURCEMAP
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: GENERATE_SOURCEMAP } }
+            - name: PUBLIC_URL
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: PUBLIC_URL } }
+            - name: VITE_APP_BASE_NAME
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_APP_BASE_NAME } }
+            - name: VITE_APP_API_URL
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_APP_API_URL } }
+            - name: VITE_APP_AWS_POOL_ID
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_APP_AWS_POOL_ID } }
+            - name: VITE_APP_AWS_APP_CLIENT_ID
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_APP_AWS_APP_CLIENT_ID } }
+            - name: VITE_STRIPE_PUBLISHABLE_KEY
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_STRIPE_PUBLISHABLE_KEY } }
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+          volumeMounts:
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+      volumes:
+        - name: nginx-cache
+          emptyDir: {}

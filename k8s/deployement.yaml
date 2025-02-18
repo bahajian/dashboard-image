@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signalify-dashboard
+  labels:
+    app: signalify-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: signalify-dashboard
+  template:
+    metadata:
+      labels:
+        app: signalify-dashboard
+    spec:
+      containers:
+        - name: signalify-dashboard
+          image: 'bhajian/signalify-dashboard@sha256:68ae59e4d57fc02bb088b4b6276467e28bd3071a6ba80abef017d324a623cf75'
+          ports:
+            - containerPort: 8080
+          env:
+            - name: VITE_APP_VERSION
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_APP_VERSION } }
+            - name: GENERATE_SOURCEMAP
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: GENERATE_SOURCEMAP } }
+            - name: PUBLIC_URL
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: PUBLIC_URL } }
+            - name: VITE_APP_BASE_NAME
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_APP_BASE_NAME } }
+            - name: VITE_APP_API_URL
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_APP_API_URL } }
+            - name: VITE_APP_AWS_POOL_ID
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_APP_AWS_POOL_ID } }
+            - name: VITE_APP_AWS_APP_CLIENT_ID
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_APP_AWS_APP_CLIENT_ID } }
+            - name: VITE_STRIPE_PUBLISHABLE_KEY
+              valueFrom: { configMapKeyRef: { name: signalify-config, key: VITE_STRIPE_PUBLISHABLE_KEY } }
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+          volumeMounts:
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+      volumes:
+        - name: nginx-cache
+          emptyDir: {}
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: signalify-dashboard
+  namespace: signalify-dashboard
+spec:
+  selector:
+    app: signalify-dashboard
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+
+---
+
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: signalify-dashboard
+  namespace: signalify-dashboard
+spec:
+  to:
+    kind: Service
+    name: signalify-dashboard
+    weight: 100
+  host: dashboard.signalify.co # Public hostname for the Route
+  path: /dashboard
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: signalify-config
+data:
+  VITE_APP_VERSION: "v3.3.0"
+  GENERATE_SOURCEMAP: "false"
+  PUBLIC_URL: "https://dashboard.signalify.co/dashboard"
+  VITE_APP_BASE_NAME: "/dashboard/"
+  VITE_APP_API_URL: "https://api.dashboard.signalify.co/"
+  VITE_APP_AWS_POOL_ID: "us-east-1_jsTxX4AJ3"
+  VITE_APP_AWS_APP_CLIENT_ID: "5cog3ahdu018urt1t0qsn0c9m9"
+  VITE_STRIPE_PUBLISHABLE_KEY: "pk_test_51QULjG07n7BY3Vpoabm59C6PzaaFPp1pnKjOor8zyRAsP8RRqsgXWbI1R8AdnEjUuMg5VDGtDEqiwyqZjXPZ40zJ009UXtzLJG"
+
