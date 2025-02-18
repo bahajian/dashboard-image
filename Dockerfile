@@ -23,6 +23,9 @@ COPY nginx.conf /etc/nginx/nginx.conf
 RUN mkdir -p /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp && \
     chown -R nginx:nginx /var/cache/nginx
 
+RUN chmod -R 777 /usr/share/nginx/html/assets
+
+
 
 
 # Copy entrypoint script
