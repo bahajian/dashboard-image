@@ -25,7 +25,7 @@ jobs:
         if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
           echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
         else
-          echo "TAG_NAME=latest" >> $GITHUB_ENV
+          echo "TAG_NAME=test" >> $GITHUB_ENV
         fi
 
     - name: Configure AWS Credentials

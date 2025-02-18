@@ -1,20 +1,21 @@
 import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import jsconfigPaths from 'vite-jsconfig-paths';
 
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
-
+export default defineConfig(() => {
   return {
     define: {
-      'process.env': Object.keys(process.env).reduce((acc, key) => {
-        if (key.startsWith('VITE_')) {
-          acc[key] = process.env[key] || env[key]; // ✅ Remove JSON.stringify to prevent extra quotes
-        }
-        return acc;
-      }, {}),
-      global: 'globalThis' // ✅ Fix "global is not defined" error
+      'process.env': {
+        VITE_APP_VERSION: process.env.VITE_APP_VERSION,
+        GENERATE_SOURCEMAP: process.env.GENERATE_SOURCEMAP,
+        PUBLIC_URL: process.env.PUBLIC_URL,
+        VITE_APP_BASE_NAME: process.env.VITE_APP_BASE_NAME,
+        VITE_APP_API_URL: process.env.VITE_APP_API_URL,
+        VITE_APP_AWS_POOL_ID: process.env.VITE_APP_AWS_POOL_ID,
+        VITE_APP_AWS_APP_CLIENT_ID: process.env.VITE_APP_AWS_APP_CLIENT_ID,
+        VITE_STRIPE_PUBLISHABLE_KEY: process.env.VITE_STRIPE_PUBLISHABLE_KEY
+      }
     },
     server: {
       open: true,
@@ -37,7 +38,7 @@ export default defineConfig(({ mode }) => {
         }
       ]
     },
-    base: process.env.VITE_APP_BASE_NAME || env.VITE_APP_BASE_NAME,
+    base: process.env.VITE_APP_BASE_NAME,
     plugins: [react(), jsconfigPaths()]
   };
 });
