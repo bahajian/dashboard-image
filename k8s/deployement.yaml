@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: signalify-dashboard
-          image: 'bhajian/signalify-dashboard@sha256:68ae59e4d57fc02bb088b4b6276467e28bd3071a6ba80abef017d324a623cf75'
+          image: 'bahajian/signalify-dashboard:latest'
           ports:
             - containerPort: 8080
           env:

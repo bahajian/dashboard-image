@@ -81,7 +81,7 @@ export default function Header() {
                 <Logo reverse to="/" />
               </Typography>
               <Chip
-                label={process.env.VITE_APP_VERSION}
+                label={import.meta.env.VITE_APP_VERSION}
                 variant="outlined"
                 size="small"
                 color="secondary"

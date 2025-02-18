@@ -21,7 +21,7 @@ export function clearCache() {
 // The fetcher function for SWR, which uses our Axios instance
 const fetcher = (url) => axiosInstance.get(url).then((res) => res.data);
 
-const API_BASE = `${process.env.VITE_APP_API_URL}api/channel`;
+const API_BASE = `${import.meta.env.VITE_APP_API_URL}api/channel`;
 
 /**
  * Hook to get all ENABLED channels

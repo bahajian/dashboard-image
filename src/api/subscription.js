@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use(async (config) => {
 // The fetcher function for SWR, which uses our Axios instance
 const fetcher = (url) => axiosInstance.get(url).then((res) => res.data);
 
-const API_BASE = `${process.env.VITE_APP_API_URL}api/subscription`;
+const API_BASE = `${import.meta.env.VITE_APP_API_URL}api/subscription`;
 
 /**
  * Hook to get subscriptions by the current user

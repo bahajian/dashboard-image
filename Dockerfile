@@ -19,14 +19,12 @@ COPY --from=builder /app/dist .
 # Copy custom Nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Ensure required directories exist and set correct permissions
-RUN mkdir -p /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp && \
-    chown -R nginx:nginx /var/cache/nginx
-
-# Copy entrypoint script
+# Copy runtime environment script
+COPY env.template.js /usr/share/nginx/html/env.js
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 RUN chmod -R 777 /usr/share/nginx/html/assets
+
 # Set the entrypoint script to run on container start
 ENTRYPOINT ["/entrypoint.sh"]
 

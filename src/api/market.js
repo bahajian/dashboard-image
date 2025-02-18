@@ -26,7 +26,7 @@ const fetcher = async (url) => {
   return data;
 };
 
-const API_BASE = `${process.env.VITE_APP_API_URL}api/market`;
+const API_BASE = `${import.meta.env.VITE_APP_API_URL}api/market`;
 
 /**
  * Hook to get autocomplete results by query

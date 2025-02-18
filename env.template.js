@@ -1,0 +1,5 @@
+window._env_ = {
+    VITE_APP_AWS_POOL_ID: "$VITE_APP_AWS_POOL_ID",
+    VITE_APP_AWS_APP_CLIENT_ID: "$VITE_APP_AWS_APP_CLIENT_ID"
+  };
+  

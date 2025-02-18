@@ -14,7 +14,7 @@ axiosInstance.interceptors.request.use(async (config) => {
 
 const fetcher = (url) => axiosInstance.get(url).then((res) => res.data);
 
-const API_BASE = `${process.env.VITE_APP_API_URL}api/signal`;
+const API_BASE = `${import.meta.env.VITE_APP_API_URL}api/signal`;
 
 /**
  * Hook to get signals by channelId with pagination
