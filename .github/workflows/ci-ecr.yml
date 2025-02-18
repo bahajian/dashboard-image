@@ -3,7 +3,7 @@ name: Build and Push Node.js Image to AWS ECR
 on:
   push:
     branches: 
-      - main
+      - master
     tags:
       - "*"  # Triggers workflow when a tag is pushed
 
