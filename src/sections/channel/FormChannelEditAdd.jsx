@@ -100,7 +100,7 @@ export default function FormChannelEditAdd({ open, onClose, channel }) {
             severity: 'success',
           });
           // Revalidate the cache for the specific channel
-          mutate(`${import.meta.env.VITE_APP_API_URL}api/channel?id=${channel.id}`);
+          mutate(`${window.env.VITE_APP_API_URL}api/channel?id=${channel.id}`);
         } else {
           await insertChannel(updatedValues);
           setSnackbar({

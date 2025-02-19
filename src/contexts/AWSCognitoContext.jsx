@@ -15,9 +15,12 @@ const initialState = {
   user: null
 };
 
+
+
+
 export const userPool = new CognitoUserPool({
-  UserPoolId: import.meta.env.VITE_APP_AWS_POOL_ID || '',
-  ClientId: import.meta.env.VITE_APP_AWS_APP_CLIENT_ID || ''
+  UserPoolId: window.env.VITE_APP_AWS_POOL_ID || '',
+  ClientId: window.env.VITE_APP_AWS_APP_CLIENT_ID || ''
 });
 
 const setSession = (serviceToken) => {

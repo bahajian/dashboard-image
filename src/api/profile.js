@@ -19,7 +19,7 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('serviceToken'); // Clear token
-      await mutate(`${import.meta.env.VITE_APP_API_URL}api/profile`, null, false); // Clear SWR cache
+      await mutate(`${window.env.VITE_APP_API_URL}api/profile`, null, false); // Clear SWR cache
     }
     return Promise.reject(error);
   }
@@ -28,7 +28,7 @@ axiosInstance.interceptors.response.use(
 // The fetcher function for SWR, which uses our authenticated Axios instance
 const fetcher = (url) => axiosInstance.get(url).then((res) => res.data);
 
-const API_BASE = `${import.meta.env.VITE_APP_API_URL}api/profile`;
+const API_BASE = `${window.env.VITE_APP_API_URL}api/profile`;
 
 export function useGetProfile() {
   const serviceToken = localStorage.getItem('serviceToken'); // Retrieve the token from localStorage
