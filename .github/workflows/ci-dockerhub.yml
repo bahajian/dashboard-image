@@ -31,7 +31,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/signalify-dashboard:test
+          tags: ${{ secrets.DOCKER_USERNAME }}/signalify-dashboard:latest
 
       # Optional: Logout from Docker Hub
       - name: Log out from Docker Hub
